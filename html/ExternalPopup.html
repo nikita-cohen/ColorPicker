@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/picker.css"/>
+    <link rel="stylesheet" href="../css/ExternalPopup.css">
+    <title>Title</title>
+</head>
+<body>
+<div class="main-container">
+    <div class="menu-container">
+        <div class="header-text">
+            Easy ColorPicker
+        </div>
+        <img class="logo-img" src="../asset/image/pipette.svg" alt="img"/>
+    </div>
+    <div class="selector">
+        <select class="selector-tag selector-txt">
+                <option class="selector-txt">Selected Color</option>
+                <option class="selector-txt">Dominant Color</option>
+        </select>
+
+    </div>
+    <div id="color-container" class="color-container"></div>
+    <div class="operation-buttons">
+        <div id="circle-color-preview" class="circle-color-preview"></div>
+        <div  class="color-code">
+            <div id="color-code" class="code-txt"></div>
+        </div>
+        <div class="which-code">
+            <img id="up" class="img-up-down" src="../asset/image/vector-up.svg" alt="up"/>
+            <div id="which-code-txt" class="which-code-txt"></div>
+            <img id="down" class="img-up-down" src="../asset/image/vector-down.svg" alt="down">
+        </div>
+    </div>
+    <div class="wave-container">
+        <img src="../asset/image/wave.svg" alt="wave">
+        <div class="position-for-bottom-popup">
+            <div class="txt-recent">
+                Recent
+            </div>
+            <div class="cubes">
+                <div class="cube"></div>
+                <div class="cube"></div>
+                <div class="cube"></div>
+                <div class="cube"></div>
+                <div class="cube"></div>
+            </div>
+            <div id="pick-color-btn" class="button-pick">
+                <div class="button-txt">
+                    Pick Color
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/picker.js"></script>
+<script type="module" src="../js/ExternalColorPicker.js"></script>
+</body>
+</html>
