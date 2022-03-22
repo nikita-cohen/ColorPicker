@@ -15,9 +15,9 @@
         <img class="logo-img" src="../asset/image/pipette.svg" alt="img"/>
     </div>
     <div class="selector">
-        <select class="selector-tag selector-txt">
+        <select id="selector" class="selector-tag selector-txt">
                 <option class="selector-txt">Selected Color</option>
-                <option class="selector-txt">Dominant Color</option>
+                <option id="dominant" class="selector-txt">Dominant Color</option>
         </select>
 
     </div>
@@ -40,15 +40,20 @@
                 Recent
             </div>
             <div class="cubes">
-                <div class="cube"></div>
-                <div class="cube"></div>
-                <div class="cube"></div>
-                <div class="cube"></div>
-                <div class="cube"></div>
+                <div id="cube-one" class="cube"></div>
+                <div id="cube-two" class="cube"></div>
+                <div id="cube-three" class="cube"></div>
+                <div id="cube-four" class="cube"></div>
+                <div id="cube-five" class="cube"></div>
             </div>
             <div id="pick-color-btn" class="button-pick">
                 <div class="button-txt">
                     Pick Color
+                </div>
+            </div>
+            <div id="cant-access-page" class="cant-access-page">
+                <div class="cant-txt">
+                    Can't pick from this page
                 </div>
             </div>
         </div>
@@ -56,6 +61,6 @@
 </div>
 
 <script src="../js/picker.js"></script>
-<script type="module" src="../js/ExternalColorPicker.js"></script>
+<script type="text/javascript" src="../js/ExternalColorPicker.js"></script>
 </body>
 </html>
