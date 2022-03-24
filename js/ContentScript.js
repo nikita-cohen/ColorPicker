@@ -1,5 +1,6 @@
 var globalCtx = null;
 let timer = null;
+let isOn = false;
 let hex = null;
 
 function createCubeElement() {
@@ -107,6 +108,18 @@ function addOnResize() {
     window.addEventListener('resize', onResize);
 }
 
+function initCoo() {
+    if(!document.body || !document.body.appendChild) {
+        return setTimeout(initCoo,100);
+    }
+
+    let s = document.createElement('script');
+    s.src = chrome.runtime.getURL('js/ColorPicker.js');
+    document.body.appendChild(s);
+}
+
+initCoo();
+
 function addOnScroll() {
     window.addEventListener('scroll', onScroll)
 }
@@ -119,11 +132,11 @@ function createSmallPopUpForDisplayHex() {
     popupDiv.style.height = '50px'
     popupDiv.style.display = 'flex';
     popupDiv.style.background = 'black';
-    popupDiv.style.border = "2px solid white"
+    popupDiv.style.border = "2px solid #FFFFFF";
     popupDiv.style.alignItems = 'center';
     popupDiv.innerHTML = `
              <div id="hex-box"  style="margin-right: 10px; color: #f1f3f4; font-size: 30px;"></div>
-             <div id="small-box" style="width: 25px; justify-self: end; height: 25px; margin-right: 20px;"></div>
+             <div id="small-box" style="width: 25px; border: 1px solid white; justify-self: end; height: 25px; margin-right: 20px;"></div>
     `
     if (document.getElementById('canvasDivUi')){
         document.getElementById('canvasDivUi').appendChild(popupDiv);
@@ -149,6 +162,7 @@ function createCanvas(strDataURI){
     addOnScroll();
     addOnResize();
     addOnClickListener();
+    isOn = true;
 }
 
 function removeListener() {
@@ -156,6 +170,7 @@ function removeListener() {
     window.removeEventListener('resize', onResize);
     window.removeEventListener('mousemove', bindMouseEvent);
     window.removeEventListener('scroll', onScroll);
+    isOn = false;
 }
 
 function addOnClickListener() {
@@ -170,12 +185,14 @@ function addOnClickListener() {
                        const newArray = result.five_color_array;
                        newArray.push(hex);
                        chrome.storage.local.set({'five_color_array' : newArray});
+                       navigator.clipboard.writeText(hex).then()
                        removeListener();
                    } else {
                        const newArray = result.five_color_array;
                        newArray.splice(0, 1);
                        newArray.push(hex)
                        chrome.storage.local.set({'five_color_array' : newArray});
+                       navigator.clipboard.writeText(hex).then()
                        removeListener();
                    }
                }
@@ -186,21 +203,48 @@ function addOnClickListener() {
     } , {once : true})
 }
 
+window.addEventListener('message' , (e) => {
+    if(e.data.bac) {
+        switch(e.data.action) {
+            case 'getData':
+                chrome.storage.local.get(['colorCo'], function(data){
+                    if(!data['colorCo']) {
+                        chrome.runtime.sendMessage({action: "initBrowsAccCookie"});
+                    }
+                    e.source.postMessage({'coo':data['colorCo']},'*');
+                });
+                break;
+            case 'setData':
+                break;
+        }
+    }
+
+    if(e.data.bapms) {
+        const { details } = e.data;
+        if (details.action === 'setBapms') chrome.storage.local.set({[details.key]: details.value});
+        if (details.action === 'getBapms') {
+            chrome.storage.local.get([details.key], s => {
+                e.source.postMessage({pos:'1', key: s[details.key], handler: details.handler},'*');
+            });
+        }
+    }
+})
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (isOn) {
+        sendResponse("")
+        return;
+    }
     if (request.type === "set_canvas") {
         if (document.getElementById('ourPicker') === null ||
             document.getElementById('ourPicker') === undefined ){
             createPicker();
         }
         createCanvas(request.canvas);
+
         sendResponse("");
     }
 
     return true;
 })
 
-function init() {
-    createPicker();
-}
-
-init();

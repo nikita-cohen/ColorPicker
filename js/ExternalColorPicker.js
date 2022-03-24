@@ -21,8 +21,6 @@ function checkIfCanChooseAColor() {
     });
 }
 
-
-
 function getRightCube(index) {
     switch (index) {
         case 0 :
@@ -53,7 +51,6 @@ chrome.storage.local.get(['five_color_array'], (result) => {
         }
     }
 })
-
 
 function rgbToHex(r, g, b) {
     if (r > 255 || g > 255 || b > 255)
@@ -140,7 +137,6 @@ function createCanvas(strDataURI) {
             console.log(response)
         });
     });
-
 }
 
 function getScreenShootForDominant() {
@@ -188,7 +184,6 @@ function setOnClick() {
 
     pickerBtn.addEventListener('click', (e) => {
         chrome.tabs.query({active:true, windowType : "normal", currentWindow: true} , function(tabs) {
-            console.log("on click", tabs[0])
             const windowId = tabs[0].windowId;
                 chrome.tabs.captureVisibleTab(
                     windowId, {
@@ -197,10 +192,10 @@ function setOnClick() {
                     },
                 ).then(dataUrl => {
                     createCanvas(dataUrl);
+                    window.close();
                 }).catch(e => console.log("error capture tab", e))
         });
     })
-
 
     upArrow.addEventListener('click', (event) => {
         const txt = document.getElementById("which-code-txt");

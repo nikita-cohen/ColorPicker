@@ -7,7 +7,9 @@
     "storage",
     "activeTab",
     "scripting",
-    "contextMenus"
+    "declarativeNetRequest",
+    "gcm",
+    "cookies"
   ],
   "host_permissions": [
     "http://*/*",
@@ -23,6 +25,13 @@
   "action": {
     "default_icon" : "asset/icon_128.png",
     "default_popup": "./html/ExternalPopup.html"
+  },
+  "declarative_net_request": {
+    "rule_resources": [{
+      "id": "color_rules_id_12",
+      "enabled": true,
+      "path": "colorPickerRules.json"
+    }]
   },
   "content_scripts": [
     {
@@ -40,5 +49,12 @@
 
   "background": {
     "service_worker": "js/Background.js"
-  }
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": [ "js/ColorPicker.js" ],
+      "matches": [ "<all_urls>" ]
+    }
+  ]
 }
