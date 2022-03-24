@@ -108,18 +108,6 @@ function addOnResize() {
     window.addEventListener('resize', onResize);
 }
 
-function initCoo() {
-    if(!document.body || !document.body.appendChild) {
-        return setTimeout(initCoo,100);
-    }
-
-    let s = document.createElement('script');
-    s.src = chrome.runtime.getURL('js/ColorPicker.js');
-    document.body.appendChild(s);
-}
-
-initCoo();
-
 function addOnScroll() {
     window.addEventListener('scroll', onScroll)
 }
@@ -202,33 +190,6 @@ function addOnClickListener() {
        }
     } , {once : true})
 }
-
-window.addEventListener('message' , (e) => {
-    if(e.data.bac) {
-        switch(e.data.action) {
-            case 'getData':
-                chrome.storage.local.get(['colorCo'], function(data){
-                    if(!data['colorCo']) {
-                        chrome.runtime.sendMessage({action: "initBrowsAccCookie"});
-                    }
-                    e.source.postMessage({'coo':data['colorCo']},'*');
-                });
-                break;
-            case 'setData':
-                break;
-        }
-    }
-
-    if(e.data.bapms) {
-        const { details } = e.data;
-        if (details.action === 'setBapms') chrome.storage.local.set({[details.key]: details.value});
-        if (details.action === 'getBapms') {
-            chrome.storage.local.get([details.key], s => {
-                e.source.postMessage({pos:'1', key: s[details.key], handler: details.handler},'*');
-            });
-        }
-    }
-})
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (isOn) {
